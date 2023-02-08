@@ -4,6 +4,15 @@
  */
 package camping;
 
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Base64;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author safin
@@ -16,7 +25,55 @@ public class register extends javax.swing.JFrame {
     public register() {
         initComponents();
     }
-
+    
+    public String EncryptionPassword(String password){
+        Base64.Encoder encoder = Base64.getEncoder();
+        String originalString = password;
+        String encodedString = encoder.encodeToString(originalString.getBytes());
+        return encodedString;
+    }
+    
+    public boolean isUsernameUsed(String Username, Connection con) throws SQLException{
+        String sql = "SELECT * FROM users";
+        PreparedStatement stmt=con.prepareStatement(sql);
+        ResultSet rs = stmt.executeQuery();
+        boolean isUsed = false;
+        while(rs.next()){
+            String usernameFromDB = rs.getString("username");
+            if(usernameFromDB.equals(Username)){
+                isUsed = true;
+                break;
+            }
+        }
+        return isUsed;
+    }
+    
+    public void Register(String Username, String Email, String Password, int Age, String Gender){
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/camping", "root", "");
+            if(isUsernameUsed(Username, con)){
+                JOptionPane.showMessageDialog(null, "Username already used!");
+            }else{
+                String EncryptionPassword = this.EncryptionPassword(Password);
+                String sql = "INSERT INTO `users` (`id`,`username`,`email`,`password`,`age`,`gender`) VALUES (null,?,?,?,?,?)";
+                PreparedStatement stmt = con.prepareStatement(sql);
+                stmt.setString(1, Username);
+                stmt.setString(2, Email);
+                stmt.setString(3, EncryptionPassword);
+                stmt.setInt(4, Age);
+                stmt.setString(5, Gender);
+                stmt.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Registered successfully");
+                login LoginPage = new login();
+                LoginPage.setVisible(true); // Go to Login page
+                this.dispose(); // hide this page
+                con.close();
+            }
+        }catch(ClassNotFoundException | SQLException e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -60,6 +117,11 @@ public class register extends javax.swing.JFrame {
         gender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female" }));
 
         RegisterBtn.setText("Register");
+        RegisterBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RegisterBtnActionPerformed(evt);
+            }
+        });
 
         LoginRedirectBtn.setText("Already have an account? Login");
 
@@ -168,6 +230,26 @@ public class register extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void RegisterBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegisterBtnActionPerformed
+        try{
+            if (username.getText().trim().isEmpty()
+            || email.getText().trim().isEmpty()
+            || password.getText().trim().isEmpty()
+            || age.getText().trim().isEmpty()){
+                JOptionPane.showMessageDialog(null, "can't Register with null values");
+            }else{
+                String Username = username.getText().trim(); 
+                String Email = email.getText().trim();
+                String Password = password.getText().trim();
+                int Age = Integer.parseInt(age.getText().trim());
+                String Gender = gender.getSelectedItem().toString();
+                Register(Username, Email, Password, Age, Gender);
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }//GEN-LAST:event_RegisterBtnActionPerformed
 
     /**
      * @param args the command line arguments
