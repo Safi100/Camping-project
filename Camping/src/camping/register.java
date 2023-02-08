@@ -39,8 +39,8 @@ public class register extends javax.swing.JFrame {
         age = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         gender = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        RegisterBtn = new javax.swing.JButton();
+        LoginRedirectBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -59,9 +59,9 @@ public class register extends javax.swing.JFrame {
 
         gender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female" }));
 
-        jButton1.setText("Register");
+        RegisterBtn.setText("Register");
 
-        jButton2.setText("Already have an account? Login");
+        LoginRedirectBtn.setText("Already have an account? Login");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -90,9 +90,9 @@ public class register extends javax.swing.JFrame {
                                     .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(jLabel5)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jButton1)
+                                .addComponent(RegisterBtn)
                                 .addGap(10, 10, 10)
-                                .addComponent(jButton2)))
+                                .addComponent(LoginRedirectBtn)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -121,8 +121,8 @@ public class register extends javax.swing.JFrame {
                 .addComponent(gender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(RegisterBtn)
+                    .addComponent(LoginRedirectBtn))
                 .addContainerGap())
         );
 
@@ -205,11 +205,11 @@ public class register extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton LoginRedirectBtn;
+    private javax.swing.JButton RegisterBtn;
     private javax.swing.JTextField age;
     private javax.swing.JTextField email;
     private javax.swing.JComboBox<String> gender;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
