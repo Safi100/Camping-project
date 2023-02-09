@@ -4,6 +4,10 @@
  */
 package camping;
 
+import java.sql.*;
+import java.util.Base64;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author safin
@@ -17,6 +21,35 @@ public class login extends javax.swing.JFrame {
         initComponents();
     }
 
+    public String EncryptionPassword(String password){
+        Base64.Encoder encoder = Base64.getEncoder();
+        String originalString = password;
+        String encodedString = encoder.encodeToString(originalString.getBytes());
+        return encodedString;
+    }
+    
+    public void Login(String Username, String Password){
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/camping", "root", "");
+            String sql = "SELECT * FROM `users` WHERE `username`=? AND `password`=?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            String EncryptionPassword = this.EncryptionPassword(Password);
+            stmt.setString(1,Username);
+            stmt.setString(2,EncryptionPassword);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()){
+                System.out.println(rs.getString("username"));
+                System.out.println(rs.getString("password"));
+            }else{
+                JOptionPane.showMessageDialog(null,"Login failed\nUsername\\Password does not correct");
+            }
+            con.close();
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+   
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -133,7 +166,14 @@ public class login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBtnActionPerformed
-        // TODO add your handling code here:
+        if (username.getText().trim().isEmpty()
+            || password.getText().trim().isEmpty()){
+                JOptionPane.showMessageDialog(null, "can't Login with null values");
+        }else{
+            String Username = username.getText().trim();
+            String Password = password.getText().trim();
+            Login(Username, Password);
+        }
     }//GEN-LAST:event_loginBtnActionPerformed
 
     /**
