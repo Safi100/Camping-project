@@ -5,7 +5,6 @@
 package camping;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -56,13 +55,14 @@ public class register extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Username already used!");
             }else{
                 String EncryptionPassword = this.EncryptionPassword(Password);
-                String sql = "INSERT INTO `users` (`id`,`username`,`email`,`password`,`age`,`gender`) VALUES (null,?,?,?,?,?)";
+                String sql = "INSERT INTO `users` (`id`,`username`,`email`,`password`,`role`,`age`,`gender`) VALUES (null,?,?,?,?,?,?)";
                 PreparedStatement stmt = con.prepareStatement(sql);
                 stmt.setString(1, Username);
                 stmt.setString(2, Email);
                 stmt.setString(3, EncryptionPassword);
-                stmt.setInt(4, Age);
-                stmt.setString(5, Gender);
+                stmt.setString(4, "user");
+                stmt.setInt(5, Age);
+                stmt.setString(6, Gender);
                 stmt.executeUpdate();
                 JOptionPane.showMessageDialog(null, "Registered successfully");
                 login LoginPage = new login();
