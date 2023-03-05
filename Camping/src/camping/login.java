@@ -39,8 +39,15 @@ public class login extends javax.swing.JFrame {
             stmt.setString(2,EncryptionPassword);
             ResultSet rs = stmt.executeQuery();
             if(rs.next()){
-                System.out.println(rs.getString("username"));
-                System.out.println(rs.getString("password"));
+                String role = rs.getString("role");
+                if(role.equals("admin")){
+                    adminPanel obj = new adminPanel();
+                    obj.setVisible(true);
+                    this.dispose();
+                }else{
+//                    Go to user page
+                }
+                
             }else{
                 JOptionPane.showMessageDialog(null,"Login failed\nUsername\\Password does not correct");
             }
@@ -72,7 +79,7 @@ public class login extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel1.setText("Camping user login");
+        jLabel1.setText("Camping login");
 
         jLabel2.setText("Username");
 
@@ -129,9 +136,9 @@ public class login extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 100, Short.MAX_VALUE)
                         .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 100, Short.MAX_VALUE))
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
