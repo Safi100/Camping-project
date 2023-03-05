@@ -75,7 +75,7 @@ public class adminPanel extends javax.swing.JFrame {
                 this.campground_age_rating.setText("Age from " + min_age + "-" + max_age);
                 String gender = (gender_rating.equals("")) ? "Camp for both males and females" : (gender_rating.equals("Male")) ? "Camp only for males" : "Camp only for females";
                 this.campground_gender_rating.setText(gender);
-                this.campground_remaining_seats.setText(remaining_seats);
+                this.campground_remaining_seats.setText("Remaining seats: " + remaining_seats);
                 this.campground_box.setVisible(true);
                 
                 
