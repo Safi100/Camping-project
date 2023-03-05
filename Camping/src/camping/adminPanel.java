@@ -84,6 +84,22 @@ public class adminPanel extends javax.swing.JFrame {
             Logger.getLogger(adminPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    public void Delete_campground(int campID){
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/camping", "root", "");   
+            String sql = "DELETE FROM `campgrounds` WHERE `id` = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1,campID);
+            stmt.execute();
+//          Refresh page
+            adminPanel obj = new adminPanel();
+            this.dispose();
+            obj.setVisible(true);
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(adminPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -178,6 +194,11 @@ public class adminPanel extends javax.swing.JFrame {
         campground_remaining_seats.setText("jLabel3");
 
         delete_camp_Btn.setText("Delete campground");
+        delete_camp_Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                delete_camp_BtnActionPerformed(evt);
+            }
+        });
 
         campground_description.setEditable(false);
         campground_description.setColumns(20);
@@ -322,6 +343,13 @@ public class adminPanel extends javax.swing.JFrame {
         int campID = Integer.parseInt(model.getValueAt(row, 0).toString());
         display_selected_campground(campID);
     }//GEN-LAST:event_campgroundsTableMouseClicked
+
+    private void delete_camp_BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delete_camp_BtnActionPerformed
+        int row = campgroundsTable.getSelectedRow();
+        DefaultTableModel model = (DefaultTableModel)campgroundsTable.getModel();
+        int campID = Integer.parseInt(model.getValueAt(row, 0).toString());
+        Delete_campground(campID);
+    }//GEN-LAST:event_delete_camp_BtnActionPerformed
 
     /**
      * @param args the command line arguments
